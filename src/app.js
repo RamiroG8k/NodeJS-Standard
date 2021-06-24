@@ -2,11 +2,14 @@
 import express from 'express';
 import morgan from 'morgan';
 import pkg from  '../package.json';
+// Libs
+import { createRoles } from './libs/setup';
 // Routes
 import productRoutes from './routes/products.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
-
+createRoles();
 // Get info from package.json
 app.set('pkg', pkg);
 
@@ -25,6 +28,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.use('/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 
 export default app;
