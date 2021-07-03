@@ -34,12 +34,10 @@ export const logIn = async (req, res) => {
 	const { email, password } = req.body;
 	
 	// TODO: Handle if both inputs are received
-
 	const userFound = await User.findOne({ email }).populate('roles');
 	if (!userFound) return res.status(400).json({ message: 'User not found' });
 
 	const matchPassword = await User.comparePassword(password, userFound.password);
-	
 	if (!matchPassword) return res.status(401).json({ token: null, message: 'Invalid password'});
 	
 	const token = jwt.sign({id: userFound._id}, config.SECRET, {
